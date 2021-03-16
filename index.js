@@ -1,3 +1,4 @@
+const { resolve } = require('path');
 const readline = require('readline');
 const rl = readline.createInterface({
     input: process.stdin,
@@ -11,29 +12,76 @@ const defaultOpts = {
 
 
 //the function to export
-function ask(q = '', o, f) {
-    var receivedOpts;
-    var opts = defaultOpts;
-    var func;
-    if(whatIsIt(o) == 'function') {
-        func = o;
-        receivedOpts = defaultOpts;
-    }else if(whatIsIt(f) == 'function') {
-        func = f;
-        receivedOpts = o;
+function ask(question = '', receivedOpts, receivedFunction) {
+    //opts is the final options
+    var finalOpts = defaultOpts;
+
+    //a var for working later
+    var opts;
+
+    //function is the final function
+    var finalFunction;
+
+    //colocating everything in their site
+    if (whatIsIt(receivedOpts) == 'function') {
+        //ask('q', () => {})
+        finalFunction = receivedOpts;
+        opts = defaultOpts;
+
+    } else if (whatIsIt(receivedFunction) == 'function' && whatIsIt(receivedOpts) == 'JSON') {
+        //ask('q', {}, () => {})
+        finalFunction = receivedFunction;
+        opts = receivedOpts;
+
+    } else if (whatIsIt(receivedOpts) == 'JSON') {
+        //ask('q', {})
+        finalFunction = () => { };
+        opts = receivedOpts;
+
+    } else if (receivedOpts === undefined && receivedFunction === undefined) {
+        //ask('q')
+        finalFunction = () => { };
+        opts = defaultOpts;
+
+    } else if (question === undefined) {
+        //ask()
+        opts = defaultOpts;
+        finalFunction = () => { };
+
+    } else if (whatIsIt(question) == 'function') {
+        //ask(() => {})
+        finalFunction = question;
+        opts = defaultOpts;
+
+    } else if (whatIsIt(question) == 'JSON' && whatIsIt(receivedOpts) == 'function') {
+        //ask({}, () => {})
+        finalFunction = receivedOpts;
+        opts = question;
+
+    } else if (whatIsIt(question) == 'JSON') {
+        //ask({})
+        finalFunction = () => { };
+        opts = question;
+
+    } else {
+        resolve(new Error('Recieved values are not valid'));
     }
-    for(var prop in receivedOpts) {
-        opts[prop] = receivedOpts[prop];
+
+    //filling the not defined values in opts
+    for (var property in opts) {
+        finalOpts[property] = opts[property];
     }
+
     return new Promise((resolve, reject) => {
-        rl.question(opts.before + q + opts.after, (answer) => {
-            func(answer);
+        rl.question(finalOpts.before + question + finalOpts.after, (answer) => {
+            finalFunction(answer);
             resolve(answer);
         });
-        if (typeof opts.limit == 'number') {
+        if (typeof finalOpts.limit == 'number') {
             setTimeout(() => {
+                finalFunction(null);
                 resolve(null);
-            }, limit);
+            }, finalOpts.limit);
         }
     });
 }
@@ -43,8 +91,8 @@ module.exports = ask;
 
 //a function to detect var types
 var JSONconstructor = ({}).constructor;
-var functionConstructor = (new function() {}).constructor;
-var lambdaConstructor = (() => {}).constructor;
+var functionConstructor = (new function () { }).constructor;
+var lambdaConstructor = (() => { }).constructor;
 
 function whatIsIt(object) {
     if (object === null) {
