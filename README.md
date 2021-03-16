@@ -1,7 +1,7 @@
  \
 What's this?
 ===============
-***console-question*** is a simple but easy way to request entries from console.
+***console-questions*** is a simple but easy way to request entries from console.
 
  \
 Example usages
@@ -9,7 +9,7 @@ Example usages
 
 Imagine that you want to ask for a name: 
 ```javascript
-const ask = require('console-question');
+const ask = require('console-questions');
 
 async function askForName() {
     var name = await ask('What is your name?');
@@ -22,7 +22,7 @@ askForName();
 But if you don't like using `promises` you can do this:
 
 ```javascript
-const ask = require('console-question');
+const ask = require('console-questions');
 
 ask('What is your name?', (name) => {
     console.log('Your name is ' + name);  //This will print the console input
@@ -38,7 +38,7 @@ There are some options that you can send to the module for custome it more.
  \
 The way to send options it's this:
 ```javascript
-const ask = require('console-question');
+const ask = require('console-questions');
 ask('What is your name?', opts, (name) => {
     console.log('Your name is ' + name);
 });
@@ -63,7 +63,7 @@ Here are the options that you can use:
  \
 Example:
 ```javascript
-const ask = require('console-question');
+const ask = require('console-questions');
 
 async function ask() {
     var name = await ask('Type your name: ', {
@@ -86,17 +86,17 @@ async function ask() {
 //imagine that you want to put
 // a limit for typing a word
 
-const ask = require('console-question');
+const ask = require('console-questions');
 
 async function typeFast() {
     var response = await ask(
-        'Type \"console-question\" in less of 1 second.',
+        'Type \"console-questions\" in less of 1 second.',
         {
             limit: 1000 /*in ms*/
         });
     if(response === null) {
         console.log('You lose')
-    }else if (response == 'console-question') {
+    }else if (response == 'console-questions') {
         console.log('You win');
     }else {
         console.log('You type it wrong: ' + response);

@@ -1,5 +1,5 @@
 {
-  "name": "console-question",
+  "name": "console-questions",
   "version": "1.0.0",
   "description": "An easy way to use console inputs.",
   "main": "index.js",
