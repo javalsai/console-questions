@@ -1,7 +1,7 @@
 {
   "name": "console-question",
-  "version": "1.0.1",
-  "description": "An easy way to make console entries.",
+  "version": "1.0.0",
+  "description": "An easy way to use console inputs.",
   "main": "index.js",
   "scripts": {
     "test": "node index"
