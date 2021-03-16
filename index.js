@@ -73,10 +73,14 @@ function ask(question = '', receivedOpts, receivedFunction) {
     }
 
     return new Promise((resolve, reject) => {
+
+        //make the question
         rl.question(finalOpts.before + question + finalOpts.after, (answer) => {
             finalFunction(answer);
             resolve(answer);
         });
+
+        //if finalOpts.limit is defined and its number:
         if (typeof finalOpts.limit == 'number') {
             setTimeout(() => {
                 finalFunction(null);
