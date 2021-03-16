@@ -106,3 +106,9 @@ typeFast();
 ```
 
 ## There will be more options soon, good luck!!!
+
+ \
+ \
+Novelties from version 1.0.1
+============================
+>**Lots** of bugs fixed.
