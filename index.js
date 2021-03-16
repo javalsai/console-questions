@@ -10,7 +10,7 @@ const defaultOpts = {
 };
 
 
-//the function to export a
+//the function to export
 function ask(q = '', o, f) {
     var receivedOpts;
     var opts = defaultOpts;
