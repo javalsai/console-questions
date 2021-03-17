@@ -48,7 +48,7 @@ console_questions.onConsoleInput((input) => {
 ## .setMaxListeners(limit)
 >Change the `.onConsoleInput(callback)` callbacks limit.
 
-## .SetDefaultOptions(object)
+## .setDefaultOptions(object)
 >Change the dafault options for the code.
 ```javascript
 const console_questions = require('console_questions');
