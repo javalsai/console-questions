@@ -4,7 +4,8 @@
   "description": "An easy way to use console inputs.",
   "main": "index.js",
   "scripts": {
-    "test": "node index"
+    "test": "node index",
+    "postinstall": "node postinstall"
   },
   "repository": {
     "type": "git",
