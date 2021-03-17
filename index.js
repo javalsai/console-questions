@@ -1,4 +1,3 @@
-const { resolve } = require('path');
 const readline = require('readline');
 const rl = readline.createInterface({
     input: process.stdin,
@@ -10,11 +9,13 @@ const defaultOpts = {
     limit: null
 };
 
+//the default options to be customized
+var constomizedDefaultOptions = defaultOpts;
 
 //the function to export
 function ask(question = '', receivedOpts, receivedFunction) {
     //opts is the final options
-    var finalOpts = defaultOpts;
+    var finalOpts = constomizedDefaultOptions;
 
     //a var for working later
     var opts;
@@ -26,7 +27,7 @@ function ask(question = '', receivedOpts, receivedFunction) {
     if (whatIsIt(receivedOpts) == 'function') {
         //ask('q', () => {})
         finalFunction = receivedOpts;
-        opts = defaultOpts;
+        opts = constomizedDefaultOptions;
 
     } else if (whatIsIt(receivedFunction) == 'function' && whatIsIt(receivedOpts) == 'JSON') {
         //ask('q', {}, () => {})
@@ -41,17 +42,17 @@ function ask(question = '', receivedOpts, receivedFunction) {
     } else if (receivedOpts === undefined && receivedFunction === undefined) {
         //ask('q')
         finalFunction = () => { };
-        opts = defaultOpts;
+        opts = constomizedDefaultOptions;
 
     } else if (question === undefined) {
         //ask()
-        opts = defaultOpts;
+        opts = constomizedDefaultOptions;
         finalFunction = () => { };
 
     } else if (whatIsIt(question) == 'function') {
         //ask(() => {})
         finalFunction = question;
-        opts = defaultOpts;
+        opts = constomizedDefaultOptions;
 
     } else if (whatIsIt(question) == 'JSON' && whatIsIt(receivedOpts) == 'function') {
         //ask({}, () => {})
@@ -64,7 +65,7 @@ function ask(question = '', receivedOpts, receivedFunction) {
         opts = question;
 
     } else {
-        resolve(new Error('Recieved values are not valid'));
+        reject('Recieved values are invalid');
     }
 
     //filling the not defined values in opts
@@ -73,7 +74,6 @@ function ask(question = '', receivedOpts, receivedFunction) {
     }
 
     return new Promise((resolve, reject) => {
-
         //make the question
         rl.question(finalOpts.before + question + finalOpts.after, (answer) => {
             finalFunction(answer);
@@ -90,8 +90,60 @@ function ask(question = '', receivedOpts, receivedFunction) {
     });
 }
 
-module.exports = ask;
 
+//the var to storage the functions to execute on "onConsoleInput"
+var onConsoleInputFunctions = [];
+function onConsoleInput(functionEvent) {
+    //error if it isn't a func
+    if (whatIsIt(functionEvent) != 'function') {
+        throw 'The object is not a function.'
+    }
+    //if this is used it runs the background
+    if (onConsoleInputFunctions.length == 0) {
+        onConsoleInputBackground();
+
+    } else if (onConsoleInputFunctions.length >= maxEventListeners) {
+        throw 'You supered the max event listeners, change it by \"console-questions.setMaxListeners(limit)\"';
+    }
+
+    //pushing the func
+    onConsoleInputFunctions.push(functionEvent);
+}
+
+//set default options
+function setDefaultOptions(options) {
+    constomizedDefaultOptions = options;
+}
+
+//the console inputs background function
+async function onConsoleInputBackground() {
+    var response = await ask('', { after: '', before: '', limit: null });
+    onConsoleInputFunctions.forEach((func) => { func(response); })
+    onConsoleInputBackground();
+}
+
+//the set max listeners for onConsoleInput event
+var maxEventListeners = 5;
+function maxListeners(number) {
+    if (number == undefined) {
+        throw 'No number specified';
+    } else if (typeof number != 'number') {
+        throw 'Invalid number';
+    }
+    maxEventListeners = number;
+}
+
+
+//export
+module.exports = {
+    ask: ask,
+    onConsoleInput: onConsoleInput,
+    setMaxLiseners: maxListeners,
+    setDefaultOptions: setDefaultOptions
+};
+
+
+//helpful functions for the code
 
 //a function to detect var types
 var JSONconstructor = ({}).constructor;
