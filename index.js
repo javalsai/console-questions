@@ -73,7 +73,7 @@ function ask(question = '', receivedOpts, receivedFunction) {
         finalOpts[property] = opts[property];
     }
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         //make the question
         rl.question(finalOpts.before + question + finalOpts.after, (answer) => {
             finalFunction(answer);
