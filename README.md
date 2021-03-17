@@ -9,10 +9,10 @@ Example usages
 
 Imagine that you want to ask for a name: 
 ```javascript
-const ask = require('console-questions');
+const console_questions = require('console-questions');
 
 async function askForName() {
-    var name = await ask('What is your name?');
+    var name = await console_questions.ask('What is your name?');
     console.log('Your name is ' + name);  //This will print the console input
 }
 
@@ -22,11 +22,39 @@ askForName();
 But if you don't like using `promises` you can do this:
 
 ```javascript
-const ask = require('console-questions');
+const console_questions = require('console-questions');
 
-ask('What is your name?', (name) => {
+console_questions.ask('What is your name?', (name) => {
     console.log('Your name is ' + name);  //This will print the console input
 });
+```
+
+ \
+Other fuctions
+==============
+## .onConsoleInput(callback);
+>This will execute the callback on every console input. \
+>There is a limit of 5 callbacks, to change it only write: `console_questions.setMaxLiseners(limit)`.
+```javascript
+const console_questions = require('console_questions');
+
+console_questions.onConsoleInput((input) => {
+    if(input == 'Hello') {
+        console.log('Hello, how are you?');
+    }
+});
+```
+
+## .setMaxListeners(limit)
+>Change the `.onConsoleInput(callback)` callbacks limit.
+
+## .SetDefaultOptions(object)
+>Change the dafault options for the code.
+```javascript
+const console_questions = require('console_questions');
+
+console_questions.setDefaultOptions({after: ': '});
+//You'll see the options next
 ```
 
  \
@@ -38,14 +66,22 @@ There are some options that you can send to the module for custome it more.
  \
 The way to send options it's this:
 ```javascript
-const ask = require('console-questions');
-ask('What is your name?', opts, (name) => {
+const console_questions = require('console-questions');
+
+console_questions.ask('What is your name?', opts, (name) => {
     console.log('Your name is ' + name);
 });
+
+
 // or
+
+
+const console_questions = require('console-questions');
+
 async function askForName() {
-    ask('What is your name', opts);
+    console_questions.ask('What is your name', opts);
 }
+
 askForName();
 ```
 The format of a options var is the next.
@@ -63,14 +99,15 @@ Here are the options that you can use:
  \
 Example:
 ```javascript
-const ask = require('console-questions');
+const console_questions = require('console-questions');
 
 async function ask() {
-    var name = await ask('Type your name: ', {
+    var name = await console_questions.ask('Type your name: ', {
         after: ''
     });
     console.log('Your name is ' + name);
 }
+ask();
 ```
 
 
@@ -86,10 +123,10 @@ async function ask() {
 //imagine that you want to put
 // a limit for typing a word
 
-const ask = require('console-questions');
+const console_questions = require('console-questions');
 
 async function typeFast() {
-    var response = await ask(
+    var response = await console_questions.ask(
         'Type \"console-questions\" in less of 1 second.',
         {
             limit: 1000 /*in ms*/
@@ -111,4 +148,4 @@ typeFast();
  \
 Novelties from version 1.0.2
 ============================
->**Lots** of bugs fixed.
+>Lots of new features added
