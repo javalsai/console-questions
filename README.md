@@ -109,6 +109,6 @@ typeFast();
 
  \
  \
-Novelties from version 1.0.1
+Novelties from version 1.0.2
 ============================
 >**Lots** of bugs fixed.
