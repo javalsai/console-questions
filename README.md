@@ -2,6 +2,10 @@
 What's this?
 ===============
 ***console-questions*** is a simple but easy way to request entries from console.
+ \
+ \
+There's a simplest version of this if you think this is a bit complex,
+<a href="https://www.npmjs.com/package/console-questions/v/1.0.1">version</a>.
 
  \
 Example usages
@@ -146,6 +150,9 @@ typeFast();
 
  \
  \
-Novelties from version 1.0.2
+Novelties from version 1.0.3
 ============================
->Lots of new features added
+>A postinstall file with an optional small tutorial in it has been added.
+ \
+ \
+>The package now have keywords.

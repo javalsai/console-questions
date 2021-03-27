@@ -10,15 +10,14 @@ const defaultOpts = {
 };
 
 //the default options to be customized
-var constomizedDefaultOptions = defaultOpts;
+var customizedDefaultOptions = defaultOpts;
 
 //the function to export
 function ask(question = '', receivedOpts, receivedFunction) {
+    //?const ac = new AbortController();
+    //?const signal = ac.signal;
     //opts is the final options
-    var finalOpts = constomizedDefaultOptions;
-
-    //a var for working later
-    var opts;
+    var finalOpts = customizedDefaultOptions;
 
     //function is the final function
     var finalFunction;
@@ -27,65 +26,80 @@ function ask(question = '', receivedOpts, receivedFunction) {
     if (whatIsIt(receivedOpts) == 'function') {
         //ask('q', () => {})
         finalFunction = receivedOpts;
-        opts = constomizedDefaultOptions;
+        finalOpts = customizedDefaultOptions;
 
     } else if (whatIsIt(receivedFunction) == 'function' && whatIsIt(receivedOpts) == 'JSON') {
         //ask('q', {}, () => {})
         finalFunction = receivedFunction;
-        opts = receivedOpts;
+        finalOpts = receivedOpts;
 
     } else if (whatIsIt(receivedOpts) == 'JSON') {
         //ask('q', {})
         finalFunction = () => { };
-        opts = receivedOpts;
+        finalOpts = receivedOpts;
 
     } else if (receivedOpts === undefined && receivedFunction === undefined) {
         //ask('q')
         finalFunction = () => { };
-        opts = constomizedDefaultOptions;
+        finalOpts = customizedDefaultOptions;
 
     } else if (question === undefined) {
         //ask()
-        opts = constomizedDefaultOptions;
+        finalOpts = customizedDefaultOptions;
         finalFunction = () => { };
 
     } else if (whatIsIt(question) == 'function') {
         //ask(() => {})
         finalFunction = question;
-        opts = constomizedDefaultOptions;
+        finalOpts = customizedDefaultOptions;
 
     } else if (whatIsIt(question) == 'JSON' && whatIsIt(receivedOpts) == 'function') {
         //ask({}, () => {})
         finalFunction = receivedOpts;
-        opts = question;
+        finalOpts = question;
 
     } else if (whatIsIt(question) == 'JSON') {
         //ask({})
         finalFunction = () => { };
-        opts = question;
+        finalOpts = question;
 
     } else {
         reject('Recieved values are invalid');
     }
 
     //filling the not defined values in opts
-    for (var property in opts) {
-        finalOpts[property] = opts[property];
-    }
+    finalOpts = Object.assign({}, customizedDefaultOptions, finalOpts);
 
     return new Promise((resolve) => {
+        //the timeout to clear when answered (opt: limit)
+        //?var timeout = undefined;
+
         //make the question
-        rl.question(finalOpts.before + question + finalOpts.after, (answer) => {
+        rl.question(finalOpts.before + question + finalOpts.after, /*//?{ signal: signal },*/ (answer) => {
             finalFunction(answer);
             resolve(answer);
+
+            /*//?//clear everything
+            if(timeout != undefined) {
+                clearTimeout(timeout);
+            }//? */
         });
 
-        //if finalOpts.limit is defined and its number:
+        //if finalOpts.limit is defined and it is number:
         if (typeof finalOpts.limit == 'number') {
-            setTimeout(() => {
+
+            //abort questions if time is exceed
+            //and save it in timeout to clear it whe question answered
+            //!solve abort controller inmediatly
+            /* //?timeout = */setTimeout(() => {
+                ac.abort();
+            }, finalOpts.limit);
+
+            //on abort
+            signal.addEventListener('abort', () => {
                 finalFunction(null);
                 resolve(null);
-            }, finalOpts.limit);
+            }, { once: true });
         }
     });
 }
@@ -112,7 +126,7 @@ function onConsoleInput(functionEvent) {
 
 //set default options
 function setDefaultOptions(options) {
-    constomizedDefaultOptions = options;
+    customizedDefaultOptions = options;
 }
 
 //the console inputs background function
@@ -124,7 +138,7 @@ async function onConsoleInputBackground() {
 
 //the set max listeners for onConsoleInput event
 var maxEventListeners = 5;
-function maxListeners(number) {
+function setMaxListeners(number) {
     if (number == undefined) {
         throw 'No number specified';
     } else if (typeof number != 'number') {
@@ -136,10 +150,10 @@ function maxListeners(number) {
 
 //export
 module.exports = {
-    ask: ask,
-    onConsoleInput: onConsoleInput,
-    setMaxLiseners: maxListeners,
-    setDefaultOptions: setDefaultOptions
+    ask,
+    onConsoleInput,
+    setMaxListeners,
+    setDefaultOptions,
 };
 
 
