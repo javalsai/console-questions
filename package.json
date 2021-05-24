@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node probes/index",
+    "probe": "node probes/index",
     "postinstall": "node postinstall"
   },
   "repository": {
