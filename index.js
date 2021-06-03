@@ -1,28 +1,35 @@
-const emiter = new (class extends require('events').EventEmitter {
+const emiter = new(class extends require('events').EventEmitter {
     constructor() {
         super();
-        this.ask = ask;
-        this.setDefaultOptions = setDefaultOptions;
-        this.getDefaultOptions = getDefaultOptions;
-        this.getCustomizedOptions = getCustomizedOptions;
-        this.restartOptions = restartOptions;
+        const structure = {
+            ask,
+            setDefaultOptions,
+            getDefaultOptions,
+            getCustomizedOptions,
+            restartOptions,
+        }
+        for (var p in structure) {
+            this[p] = structure[p];
+        }
     }
 });
 const defaultOpts = {
     after: '\n',
     before: '',
     limit: undefined,
+    showTyping: true,
 
-    callback: () => { },
+    callback: () => {},
 };
 const stdin = process.openStdin();
 //the default options to be customized
 var customizedDefaultOptions = defaultOpts;
 
 //the function to export
+var showingTyping = false;
+
 function ask(question, receivedOpts = {}) {
     return new Promise((resolve, reject) => {
-
         if (receivedOpts.constructor !== {}.constructor) reject(new Error('Options have to be an object')); // options isn't an object ({})
         var opts = Object.assign({}, customizedDefaultOptions, receivedOpts); // assign optins to opts
 
@@ -33,22 +40,27 @@ function ask(question, receivedOpts = {}) {
 
         //making the string
         var string = '';
-        function onPress(chunk, key) {
-            console.log(chunk);
-            if (key.sequence === '\r') {
+        var showingTypingHere = showingTyping ? false : opts.showTyping;
+        showingTyping = showingTyping ? true : showingTypingHere;
+
+        async function onPress(chunk) {
+            if (opts.showTyping && (showingTyping && showingTypingHere)) {
+                process.stdout.write(chunk);
+                showingTyping = true;
+                showingTypingHere = true;
+            }
+            if (chunk.codePointAt() === 13) {
+                await sleep(0);
                 if (timeout) clearTimeout(timeout);
                 opts.callback(string);
-                stdin.removeListener(onPress);
+                emiter.removeListener('keypress', onPress);
                 resolve(string);
+                showingTyping = false;
                 return;
             }
-            string += key.sequence;
+            string += chunk;
         }
-
-        stdin.addListener('data', onPress);
-        stdin.addListener('data', c => {console.log(c)});
-
-
+        emiter.addListener('keypress', onPress);
 
         var timeout = undefined;
         //if opts.limit is defined and it is number:
@@ -67,7 +79,7 @@ function ask(question, receivedOpts = {}) {
 }
 
 async function background() {
-    const response = await ask();
+    const response = await ask('', { showTyping: false });
     emiter.emit('input', response);
     background();
 }
@@ -85,14 +97,34 @@ function setDefaultOptions(options) {
 function getDefaultOptions() {
     return defaultOpts;
 }
+
 function getCustomizedOptions() {
     return customizedDefaultOptions;
 }
+
 function restartOptions() {
     setDefaultOptions(getDefaultOptions());
 }
 
 
+stdin.setRawMode(true);
+stdin.resume();
+
+function onPress(chunk) {
+    if (String(chunk).codePointAt() === 3) {
+        process.exit(0);
+    }
+    emiter.emit('keypress', String(chunk));
+}
+stdin.addListener('data', onPress);
+
+function sleep(ms) {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve();
+        }, ms);
+    });
+}
+
 //export
 module.exports = emiter;
-ask('a').then(a => console.log(a));
