@@ -28,7 +28,7 @@ var customizedDefaultOptions = defaultOpts;
 //the function to export
 var showingTyping = false;
 
-function ask(question, receivedOpts = {}) {
+function ask(question, receivedOpts = customizedDefaultOptions) {
     return new Promise((resolve, reject) => {
         if (receivedOpts.constructor !== {}.constructor) reject(new Error('Options have to be an object')); // options isn't an object ({})
         var opts = Object.assign({}, customizedDefaultOptions, receivedOpts); // assign optins to opts
