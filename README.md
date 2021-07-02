@@ -153,5 +153,5 @@ Other
 =====
 
 * See the [npm page](https://www.npmjs.com/package/console-questions) of this package.
-* Check out our [GitHub](https://github.com/javalsai/ask) page to see this code.
+* Check out our [GitHub](https://github.com/javalsai/console-questions) page to see this code.
 * Join our [discord](https://discord.gg/Qy6s2DhWBF) community to make your suggestions, ask some doubts or know new features before publishing it.
