@@ -1,7 +1,7 @@
 {
     "name": "console-questions",
     "version": "1.1.0",
-    "description": "An easy way to use console inputs.",
+    "description": "An easy way to make a console-question.",
     "main": "index.js",
     "scripts": {
         "test": "node probes/index",
@@ -14,5 +14,11 @@
     },
     "author": "javalsai",
     "license": "ISC",
-    "keywords": ["console", "terminal", "input"]
+    "keywords": [
+        "console",
+        "terminal",
+        "cmd",
+        "input",
+        "questions"
+    ]
 }

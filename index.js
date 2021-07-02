@@ -16,7 +16,7 @@ const emiter = new(class extends require('events').EventEmitter {
 const defaultOpts = {
     after: '\n',
     before: '',
-    limit: undefined,
+    limit: null,
     showTyping: true,
 
     callback: () => {},
@@ -67,13 +67,16 @@ function ask(question, receivedOpts = customizedDefaultOptions) {
         if ((typeof opts.limit) == 'number') {
             //abort questions if time is exceed
             //and save it in timeout to clear it whe question answered
-            timeout = setTimeout(() => {
-                opts.callback(null);
-                resolve(null);
-                stdin.removeListener(onPress);
-            }, opts.limit);
-        } else if (opts.limit !== undefined) {
-            reject(new Error('options.limit isn\'t a number'));
+            if (opts.limit !== undefined && opts.limit !== null) {
+                timeout = setTimeout(() => {
+                    opts.callback(null);
+                    resolve(null);
+                    emiter.removeListener('keypress', onPress);
+                    showingTyping = false;
+                }, opts.limit);
+            }
+        } else if (opts.limit !== undefined && opts.limit !== null) {
+            reject(new Error('options.limit isn\'t a number, undefined or null'));
         }
     });
 }
@@ -103,7 +106,7 @@ function getCustomizedOptions() {
 }
 
 function restartOptions() {
-    setDefaultOptions(getDefaultOptions());
+    return setDefaultOptions(getDefaultOptions());
 }
 
 
