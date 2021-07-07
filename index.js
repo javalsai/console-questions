@@ -1,16 +1,11 @@
 const emiter = new(class extends require('events').EventEmitter {
     constructor() {
         super();
-        const structure = {
-            ask,
-            setDefaultOptions,
-            getDefaultOptions,
-            getCustomizedOptions,
-            restartOptions,
-        }
-        for (var p in structure) {
-            this[p] = structure[p];
-        }
+        this.ask = ask;
+        this.setDefaultOptions = setDefaultOptions;
+        this.getDefaultOptions = getDefaultOptions;
+        this.getCustomizedOptions = getCustomizedOptions;
+        this.restartOptions = restartOptions;
     }
 });
 const defaultOpts = {
