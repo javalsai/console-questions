@@ -35,18 +35,18 @@ function ask(question = '', receivedOpts, receivedFunction) {
 
     } else if (whatIsIt(receivedOpts) == 'JSON') {
         //ask('q', {})
-        finalFunction = () => { };
+        finalFunction = () => {};
         opts = receivedOpts;
 
     } else if (receivedOpts === undefined && receivedFunction === undefined) {
         //ask('q')
-        finalFunction = () => { };
+        finalFunction = () => {};
         opts = defaultOpts;
 
     } else if (question === undefined) {
         //ask()
         opts = defaultOpts;
-        finalFunction = () => { };
+        finalFunction = () => {};
 
     } else if (whatIsIt(question) == 'function') {
         //ask(() => {})
@@ -60,7 +60,7 @@ function ask(question = '', receivedOpts, receivedFunction) {
 
     } else if (whatIsIt(question) == 'JSON') {
         //ask({})
-        finalFunction = () => { };
+        finalFunction = () => {};
         opts = question;
 
     } else {
@@ -95,8 +95,8 @@ module.exports = ask;
 
 //a function to detect var types
 var JSONconstructor = ({}).constructor;
-var functionConstructor = (new function () { }).constructor;
-var lambdaConstructor = (() => { }).constructor;
+var functionConstructor = (new function() {}).constructor;
+var lambdaConstructor = (() => {}).constructor;
 
 function whatIsIt(object) {
     if (object === null) {
@@ -113,8 +113,7 @@ function whatIsIt(object) {
     }
     if (object.constructor === JSONconstructor) {
         return "JSON";
-    }
-    {
+    } {
         return "don't know";
     }
 }
