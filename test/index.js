@@ -1,4 +1,4 @@
-const cq = require('console-questions');
+const cq = require('../');
 
 cq.ask(`What's your name?`, {
     callback: (response) => {
