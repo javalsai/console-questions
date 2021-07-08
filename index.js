@@ -1,4 +1,4 @@
-const emiter = new(class extends require('events').EventEmitter {
+const emiter = new(class console_questions extends require('events').EventEmitter {
     constructor() {
         super();
         this.ask = ask;
@@ -6,6 +6,7 @@ const emiter = new(class extends require('events').EventEmitter {
         this.getDefaultOptions = getDefaultOptions;
         this.getCustomizedOptions = getCustomizedOptions;
         this.restartOptions = restartOptions;
+        this.ctrlCToExit = ctrlCToExit;
     }
 });
 const defaultOpts = {
@@ -16,6 +17,7 @@ const defaultOpts = {
 
     callback: () => {},
 };
+var ctrlC = true;
 const stdin = process.openStdin();
 //the default options to be customized
 var customizedDefaultOptions = defaultOpts;
@@ -95,8 +97,7 @@ background();
 
 //set default options
 function setDefaultOptions(options) {
-    Object.assign(customizedDefaultOptions, options);
-    return options;
+    return Object.assign(customizedDefaultOptions, options);
 }
 
 function getDefaultOptions() {
@@ -111,12 +112,16 @@ function restartOptions() {
     return setDefaultOptions(getDefaultOptions());
 }
 
+function ctrlCToExit(bool = true) {
+    return ctrlC = bool;
+}
+
 
 stdin.setRawMode(true);
 stdin.resume();
 
 function onPress(chunk) {
-    if (String(chunk).codePointAt() === 3) {
+    if (String(chunk).codePointAt() === 3 && ctrlC) {
         process.exit(0);
     }
     emiter.emit('keypress', String(chunk));
@@ -130,6 +135,7 @@ function sleep(ms) {
         }, ms);
     });
 }
+
 
 //export
 module.exports = emiter;

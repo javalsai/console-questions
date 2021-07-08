@@ -1,4 +1,4 @@
-const cq = require('../');
+const cq = require('..');
 
 cq.ask(`What's your name?`, {
     callback: (response) => {
