@@ -1,3 +1,5 @@
 test
 probes
 TODO
+node_modules
+package-lock.json

@@ -2,3 +2,5 @@ test
 probes
 logos
 TODO
+node_modules
+package-lock.json
