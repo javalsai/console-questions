@@ -1,114 +1,157 @@
- \
-What's this?
-===============
-***console-questions*** is a simple but easy way to request entries from console.
+console-questions
+=================
 
- \
-Example usages
-==============
+`console-questions` is a simple way to make questions on the console.
+\
+\
+![example](https://cq-storage.javalsai9199.repl.co/docs/1.1.0/rounded-banner.png)
 
-Imagine that you want to ask for a name: 
-```javascript
-const ask = require('console-questions');
 
-async function askForName() {
-    var name = await ask('What is your name?');
-    console.log('Your name is ' + name);  //This will print the console input
+Code Sample
+===========
+
+![
+    ```javascript
+    const cq = require('console-questions');
+    cq.ask(`Whats's your name?`, {callback: (response) => {}});
+    ```
+](https://cq-storage.javalsai9199.repl.co/docs/1.1.0/1.gif)
+
+Just as simple as that.
+
+
+
+
+
+Structure
+=========
+
+The returned module is a [`EventEmitter`](https://nodejs.org/api/events.html#events_class_eventemitter) overwritten.
+
+\{
+
+* [ask](#ask-question-string-options-object): `[Function: ask]`,
+* [setDefaultOptions](#setdefaultoptions-options): `[Function: setDefaultOptions]`
+* [getDefaultOptions](#getdefaultoptions-): `[Function: getDefaultOptions]`
+* [getCustomizedOptions](#getcustomizedoptions-): `[Function: getCustomizedOptions]`
+* [restartOptions](#restartoptions-): `[Function: restartOptions]`
+
 }
 
-askForName();
-```
+// The events of the [`EventEmitter`](https://nodejs.org/api/events.html#events_class_eventemitter) are at [events](#Events).
 
-But if you don't like using `promises` you can do this:
 
-```javascript
-const ask = require('console-questions');
 
-ask('What is your name?', (name) => {
-    console.log('Your name is ' + name);  //This will print the console input
-});
-```
 
- \
+
 Options
 =======
+This are the default options used in the module.
 
-There are some options that you can send to the module for custome it more.
- \
- \
-The way to send options it's this:
 ```javascript
-const ask = require('console-questions');
-ask('What is your name?', opts, (name) => {
-    console.log('Your name is ' + name);
+{
+    after: '\n', // A string to put after every question
+    before: '',  // A string to put before every question
+    limit: null, // The limit of time to answer a question in ms (if exceeded return null)
+    showTyping: true, // If show what the user is typing or not
+
+    callback: () => {} // Just a callback
+}
+```
+
+
+
+
+
+Functions
+=========
+
+`ask (question: String, options: Object)`
+-----------------------------------------
+* Return value: `Promise`
+* Arguments: 
+  * `String` (the question)
+  * `Object` the [options](#options).
+* Resolved value: `String` (the user response for the question).
+
+// The options will be assigned with [`Object.assign()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign) to the [default options](#options).
+
+---
+
+`setDefaultOptions (options)`
+-----------------------------
+* Return value: options (the argument).
+* Argumets:
+  * `Object`: [Options](#options)
+
+// Set the default options instead of using the [default options](#options).
+
+---
+
+`getDefaultOptions ()`
+----------------------
+* Return value: The [default options](#options).
+* Arguments: None.
+
+// IMPORTANT: Returns the [default options](#options), not your [customized default options](#setdefaultoptions-options).
+
+---
+
+`getCustomizedOptions ()`
+-------------------------
+* Return value: Your [customized default options](#setdefaultoptions-options).
+* Arguments: None.
+
+// IMPORTANT: Returns your [customized default options](#setdefaultoptions-options) not the [default options](#options).
+
+---
+
+`restartOptions ()`
+-------------------
+* Return value: The [default options](#options).
+* Arguments: None.
+
+// This restart your [customized default options](#setdefaultoptions-options) to the [default options](#options).
+
+---
+
+
+Events
+======
+`"keypress"`
+------------
+
+Emited when a key is pressed.
+```javascript
+const cq = require('console-questions');
+
+cq.on('keypress', key => {
+    console.log('You pressed: ' + key);
 });
-// or
-async function askForName() {
-    ask('What is your name', opts);
-}
-askForName();
 ```
-The format of a options var is the next.
+---
+
+`"input"`
+---------
+
+Emited when the user press `Enter`.
 ```javascript
-var opts = {
-    opt1: 'value1',
-    opt2: 'value2',
-    etc: 'etc'
-}
+const cq = require('console-questions');
+
+cq.on('keypress', sentence => {
+    console.log('You written: \n' + sentence);
+});
 ```
-Here are the options that you can use:
-## After
->The after option allows you to put an `String` after the question, by default it's `\n`.
- \
- \
-Example:
-```javascript
-const ask = require('console-questions');
-
-async function ask() {
-    var name = await ask('Type your name: ', {
-        after: ''
-    });
-    console.log('Your name is ' + name);
-}
-```
+---
 
 
-## Before
->It's just a `String` to put before.
 
-&nbsp;
 
-## Limit
->It's the limit of time to respond the answer, if the limit it's supered, it will return `null`, for example:
 
-```javascript
-//imagine that you want to put
-// a limit for typing a word
 
-const ask = require('console-questions');
+Other
+=====
 
-async function typeFast() {
-    var response = await ask(
-        'Type \"console-questions\" in less of 1 second.',
-        {
-            limit: 1000 /*in ms*/
-        });
-    if(response === null) {
-        console.log('You lose')
-    }else if (response == 'console-questions') {
-        console.log('You win');
-    }else {
-        console.log('You type it wrong: ' + response);
-    }
-}
-typeFast();
-```
-
-## There will be more options soon, good luck!!!
-
- \
- \
-Novelties from version 1.0.1
-============================
->**Lots** of bugs fixed.
+* See the [npm page](https://www.npmjs.com/package/console-questions) of this package.
+* Check out our [GitHub](https://github.com/javalsai/console-questions) page to see this code.
+* Join our [discord](https://discord.gg/Qy6s2DhWBF) community to make your suggestions, ask some doubts or know new features before publishing it.
