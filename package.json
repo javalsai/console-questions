@@ -20,5 +20,8 @@
         "cmd",
         "input",
         "questions"
-    ]
+    ],
+    "devDependencies": {
+        "keypress": "^0.2.1"
+    }
 }
