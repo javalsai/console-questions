@@ -1,4 +1,17 @@
+# Exculde files starting with '.'
+# But add files that match '.*ignore', like '.gitignore' or '.npmignore'
+.*
+!.*ignore
+
+# Ignore node modules
+node_modules
+
+# Add files starting with 'show' and 'gitadd'
+!show*
+!npmadd*
+
+# Hide logos
+logos
+
 test
 probes
-logos
-TODO
