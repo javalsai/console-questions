@@ -1,5 +1,14 @@
+# Hide files starting with '.'
+# Except ignore files and files starting with '.show' and '.gitadd'
+.*
+!.*ignore
+!.show*
+!.gitadd*
+
+# Hide node_modules
+node_modules
+
+# Other
 test
 probes
-TODO
-node_modules
 package-lock.json

@@ -50,7 +50,7 @@ function ask(question, receivedOpts = customizedDefaultOptions) {
 
             // enter
             if (chunk.codePointAt() === 8) {
-                process.stdout.write(' \b');
+                process.stdout.write('\b \b');
             }
             // backspace
             else if (chunk.codePointAt() === 13) {
