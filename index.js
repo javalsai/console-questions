@@ -48,11 +48,12 @@ function ask(question, receivedOpts = customizedDefaultOptions) {
             }
 
 
-            // enter
+            // backspace
             if (chunk.codePointAt() === 8) {
+                string.slice(0, -1);
                 process.stdout.write('\b \b');
             }
-            // backspace
+            // enter
             else if (chunk.codePointAt() === 13) {
                 await sleep(0);
                 if (timeout) clearTimeout(timeout);
