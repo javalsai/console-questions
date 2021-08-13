@@ -41,6 +41,7 @@ function ask(question, receivedOpts = customizedDefaultOptions) {
         showingTyping = showingTyping ? true : showingTypingHere;
 
         async function onPress(chunk) {
+            if (chunk.codePointAt() === 27) return; // Yhis means that the user pressed some arrow, it has a very strange behavior (you can try to delete this line and try it).
             if (opts.showTyping && (showingTyping && showingTypingHere)) {
                 process.stdout.write(chunk === '\b' ? '\b \b' : chunk);
                 showingTyping = true;
