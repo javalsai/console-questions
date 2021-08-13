@@ -4,7 +4,7 @@
     "description": "An easy way to make a console-question.",
     "main": "index.js",
     "scripts": {
-        "test": "node probes/index",
+        "test": "node test/index",
         "getKey": "node getKey",
         "postinstall": "node postinstall"
     },
