@@ -24,6 +24,7 @@ Instalation
 Code Sample
 ===========
 
+![easy code sample with it's result](https://cq-storage.javalsai9199.repl.co/docs/1.1.0/1.gif)
 
 Just as simple as that.
 
@@ -161,3 +162,5 @@ Other
 =====
 
 * Go to the main page at [npm](https://www.npmjs.com/package/console-questions) of this package.
+* Please, report issues at [GitHub](https://github.com/javalsai/console-questions/issues).
+* Join our [discord](https://discord.gg/Qy6s2DhWBF) community to make your suggestions, ask some doubts or vote for new features.
