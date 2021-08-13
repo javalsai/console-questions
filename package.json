@@ -1,7 +1,7 @@
 {
     "name": "console-questions",
     "version": "1.1.1",
-    "description": "An easy way to make a console-question.",
+    "description": "An easy way to ask questions to user.",
     "main": "index.js",
     "scripts": {
         "test": "node test/index",
