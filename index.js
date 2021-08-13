@@ -42,19 +42,13 @@ function ask(question, receivedOpts = customizedDefaultOptions) {
 
         async function onPress(chunk) {
             if (opts.showTyping && (showingTyping && showingTypingHere)) {
-                process.stdout.write(chunk);
+                process.stdout.write(chunk === '\b' ? '\b \b' : chunk);
                 showingTyping = true;
                 showingTypingHere = true;
             }
 
-
-            // backspace
-            if (chunk.codePointAt() === 8) {
-                string.slice(0, -1);
-                process.stdout.write('\b \b');
-            }
             // enter
-            else if (chunk.codePointAt() === 13) {
+            if (chunk.codePointAt() === 13) {
                 await sleep(0);
                 if (timeout) clearTimeout(timeout);
                 opts.callback(string);
@@ -63,11 +57,18 @@ function ask(question, receivedOpts = customizedDefaultOptions) {
                 showingTyping = false;
                 return;
             }
-            string += chunk;
+
+            // backspace
+            else if (chunk.codePointAt() === 8) {
+                string = string.slice(0, -1);
+            } else {
+                string += chunk;
+            }
+
         }
         emiter.addListener('keypress', onPress);
 
-        var timeout = undefined;
+        var timeout;
         //if opts.limit is defined and it is number:
         if ((typeof opts.limit) == 'number') {
             //abort questions if time is exceed
