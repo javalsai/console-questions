@@ -4,18 +4,25 @@ console-questions
 `console-questions` is a simple way to make questions on the console.
 \
 \
-![example](https://cq-storage.javalsai9199.repl.co/docs/1.1.0/rounded-banner.png)
+![logo](https://cq-storage.javalsai9199.repl.co/docs/1.1.0/rounded-banner.png)
+
+
+
+Instalation
+===========
+* ## From **[npm](https://www.npmjs.com/package/console-questions)**:
+  ```
+  npm install console-questions
+  ```
+* ## From **[GitHub](https://github.com/javalsai/console-questions)**:
+  ```
+  npm install https://github.com/javalsai/console-questions
+  ```
 
 
 Code Sample
 ===========
 
-![
-    ```javascript
-    const cq = require('console-questions');
-    cq.ask(`Whats's your name?`, {callback: (response) => {}});
-    ```
-](https://cq-storage.javalsai9199.repl.co/docs/1.1.0/1.gif)
 
 Just as simple as that.
 
@@ -38,7 +45,6 @@ The returned module is a [`EventEmitter`](https://nodejs.org/api/events.html#eve
 
 }
 
-// The events of the [`EventEmitter`](https://nodejs.org/api/events.html#events_class_eventemitter) are at [events](#Events).
 
 
 
@@ -138,7 +144,6 @@ Emited when the user press `Enter`.
 ```javascript
 const cq = require('console-questions');
 
-cq.on('keypress', sentence => {
     console.log('You written: \n' + sentence);
 });
 ```
@@ -152,6 +157,4 @@ cq.on('keypress', sentence => {
 Other
 =====
 
-* See the [npm page](https://www.npmjs.com/package/console-questions) of this package.
-* Check out our [GitHub](https://github.com/javalsai/console-questions) page to see this code.
-* Join our [discord](https://discord.gg/Qy6s2DhWBF) community to make your suggestions, ask some doubts or know new features before publishing it.
+* Go to the main page at [npm](https://www.npmjs.com/package/console-questions) of this package.
