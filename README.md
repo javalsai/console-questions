@@ -1,3 +1,4 @@
+<!-- title: console-questions: docs -->
 console-questions
 =================
 
@@ -45,6 +46,7 @@ The returned module is a [`EventEmitter`](https://nodejs.org/api/events.html#eve
 
 }
 
+// The events of the [`EventEmitter`](https://nodejs.org/api/events.html#events_class_eventemitter) are at [events](#events).
 
 
 
@@ -144,6 +146,7 @@ Emited when the user press `Enter`.
 ```javascript
 const cq = require('console-questions');
 
+cq.on('input', sentence => {
     console.log('You written: \n' + sentence);
 });
 ```
