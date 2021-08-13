@@ -1,11 +1,10 @@
 {
     "name": "console-questions",
-    "version": "1.1.0",
-    "description": "An easy way to make a console-question.",
+    "version": "1.1.1",
+    "description": "An easy way to ask questions to user.",
     "main": "index.js",
     "scripts": {
-        "test": "node probes/index",
-        "probe": "node probes/index",
+        "test": "node test/index",
         "getKey": "node getKey",
         "postinstall": "node postinstall"
     },
