@@ -1,14 +1,13 @@
-# Exculde files starting with '.'
-# But add files that match '.*ignore', like '.gitignore' or '.npmignore'
+# Hide files starting with '.'
+# Except ignore files and files starting with '.show' and '.gitadd'
 .*
 !.*ignore
+!.show*
+!.gitadd*
 
-# Ignore node modules
+# Hide node_modules
 node_modules
 
-# Add files starting with 'show' and 'gitadd'
-!show*
-!gitadd*
-
+# Other
 test
 probes
