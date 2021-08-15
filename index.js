@@ -18,7 +18,7 @@ class console_questions extends events.EventEmitter {
         this.mode = 1;
 
 
-        // this.ask = require('./src/class/ask');
+        this.ask = require('./src/class/ask');
         this.setCustomizedOptions = (options) => {
             if (options.constructor !== {}.constructor) throw new TypeError('Options must be an object.');
             this.customizedOptions = Object.assign({}, this.defaultOptions, options)
