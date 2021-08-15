@@ -2,6 +2,8 @@ let data = [];
 let cursor_index = 0;
 
 module.exports = function disctionary(buffer = Buffer.alloc(0)) {
+    const _ = process.config.variables.console_questions;
+    let not_answered = false;
     // Enter
     if (buffer[0] == 0x0d) {
         cursor_index = 0;
@@ -13,7 +15,7 @@ module.exports = function disctionary(buffer = Buffer.alloc(0)) {
     }
 
     // Simple `toString` characters
-    if (
+    else if (
         /* Basic characters ' ', {, +, a, A, 0...} */
         (buffer[0] >= 0x20 && buffer[0] <= 0x7e) ||
         /* Special characters:  , ¿, ç... (' '-¿) */
@@ -42,6 +44,12 @@ module.exports = function disctionary(buffer = Buffer.alloc(0)) {
     else if (buffer[0] === 0x1b && buffer[1] === 0x5b && (buffer[2] === 0x31 || buffer[2] === 0x33 || buffer[2] === 0x34) && buffer[3] === 0x7e) {
         if (buffer[2] === 0x33) data = data.slice(0, cursor_index).concat(data.slice(cursor_index + 1));
         else cursor_index = data.join('').length * (buffer[2] === 0x34);
+    } else {
+        not_answered = true;
+    }
+
+    if (!not_answered) {
+        _.instance.emit('keypress', buffer.toString());
     }
 
     return {
