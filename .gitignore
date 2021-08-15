@@ -4,10 +4,3 @@
 !.*ignore
 !.show*
 !.gitadd*
-
-# Hide node_modules
-node_modules
-
-# Other
-test
-probes

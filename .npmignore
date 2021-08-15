@@ -5,12 +5,5 @@
 !.show*
 !.npmadd*
 
-# Hide node_modules
-node_modules
-
 # Images, they are innecessary
 logos
-
-# Other
-test
-probes
