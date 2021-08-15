@@ -4,7 +4,7 @@
     "description": "An easy way to ask questions to user.",
     "main": "index.js",
     "scripts": {
-        "test": "node test/index",
+        "test": "node scripts/test",
         "getKey": "node scripts/getKey",
         "getInputs": "node scripts/getInputs"
     },
