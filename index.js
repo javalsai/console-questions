@@ -16,7 +16,16 @@ class console_questions extends events.EventEmitter {
         this.restartOptions = () => this.customizedOptions = this.defaultOptions;
 
         this.mode = 1;
-
+        this.setMode = (mode) => {
+            if (!Number.isInteger(mode)) throw new TypeError('Mode must be an integer.');
+            if (mode < 0 || mode > 1) throw new RangeError('Mode integer must be between 0 and 1.');
+            this.emit('mode_change', mode);
+            this.mode = mode;
+            /**
+             * 0: Stdin writes by itself to stdout even if there isn't a question in progress.
+             * 1: Stdin don't writes by itself to stdout, questinons have to write by itselves.
+             */
+        };
 
         this.ask = require('./src/class/ask');
         this.setCustomizedOptions = (options) => {
@@ -24,15 +33,6 @@ class console_questions extends events.EventEmitter {
             this.customizedOptions = Object.assign({}, this.defaultOptions, options)
             let error = console_questions.validateOptions(this.customizedOptions);
             if (error instanceof Error) throw error;
-        };
-        this.setMode = (mode) => {
-            if (!Number.isInteger(mode)) throw new TypeError('Mode must be an integer.');
-            if (mode < 0 || mode > 1) throw new RangeError('Mode integer must be between 0 and 1.');
-            this.mode = mode;
-            /**
-             * 0: Stdin writes by itself to stdout even if there isn't a question in progress.
-             * 1: Stdin don't writes by itself to stdout, questinons have to write by itselves.
-             */
         };
         this.defaultDictionary = require('./src/class/dictionary');
         this.dictionary = this.defaultDictionary;
@@ -47,8 +47,8 @@ class console_questions extends events.EventEmitter {
         if (options.constructor !== {}.constructor) throw new TypeError('Options must be an object.');
         if (typeof options.after !== 'string') return new TypeError('"options.after" must be a string.');
         if (typeof options.before !== 'string') return new TypeError('"options.before" must be a string.');
-        if (Number.isInteger(options.limit) || options.limit !== null) return new TypeError('"options.limit" must be an integer or null.');
-        if (typeof options.showWhatTyping !== 'boolean') return new TypeError('"options.showWhatTyping" must be a boolean');
+        if (!(options.limit === null || Number.isInteger(options.limit))) return new TypeError('"options.limit" must be an integer or null.');
+        if (typeof options.showTyping !== 'boolean') return new TypeError('"options.showWhatTyping" must be a boolean');
         if (!options.callback instanceof Function) return new TypeError('"options.callback" must be an instance of Function');
     }
 }

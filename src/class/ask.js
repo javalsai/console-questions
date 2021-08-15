@@ -1,10 +1,9 @@
-const _ = process.config.variables.console_questions;
-
 let global_showTyping = false;
 
 function ask(q = '', raw_options = _.instance.customizedOptions) {
-    if (options.constructor !== {}.constructor) throw new TypeError('Options must be an object.');
-    let options = Object.assign({}, customizedDefaultOptions, raw_options);
+    const _ = process.config.variables.console_questions;
+    if (raw_options.constructor !== {}.constructor) throw new TypeError('Options must be an object.');
+    let options = Object.assign({}, _.instance.customizedOptions, raw_options);
     let optionsError = _.class.validateOptions(options);
     if (optionsError instanceof Error) throw optionsError;
 
@@ -13,25 +12,37 @@ function ask(q = '', raw_options = _.instance.customizedOptions) {
     options.showTyping = global_showTyping ? false : options.showTyping;
     global_showTyping = global_showTyping ? true : options.showTyping;
     return new Promise(resolve => {
+        // Typing show or not
+        let final_mode = _.instance.mode;
+        _.instance.setMode(Number(!options.showTyping));
+
+        function onModeChange(mode) {
+            final_mode = mode;
+        }
+        _.instance.on('mode_change', onModeChange);
+
+        // Input
         function onceInput(input) {
             if (timeout) clearTimeout(timeout);
             global_showTyping = false;
-            options.callback(string);
-            resolve(string);
+            _.instance.setMode(final_mode);
+            options.callback(input);
+            resolve(input);
         }
         _.instance.once('input', onceInput);
 
+        // Limit time
         let timeout;
-        if ((typeof opts.limit) == 'number') {
-            if (opts.limit !== null) {
-                timeout = setTimeout(() => {
-                    emiter.removeListener('keypress', onceInput);
-                    global_showTyping = false;
-                    opts.callback(null);
-                    resolve(null);
-                }, options.limit);
-            }
+        if (typeof options.limit == 'number' || typeof options.limit == 'bigint') {
+            timeout = setTimeout(() => {
+                _.instance.removeListener('input', onceInput);
+                global_showTyping = false;
+                _.instance.setMode(final_mode);
+                options.callback(null);
+                resolve(null);
+            }, options.limit);
         }
+
     });
 }
 module.exports = ask;
