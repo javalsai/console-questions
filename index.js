@@ -44,6 +44,7 @@ class console_questions extends events.EventEmitter {
     }
 
     static validateOptions(options) {
+        if (options.constructor !== {}.constructor) throw new TypeError('Options must be an object.');
         if (typeof options.after !== 'string') return new TypeError('"options.after" must be a string.');
         if (typeof options.before !== 'string') return new TypeError('"options.before" must be a string.');
         if (Number.isInteger(options.limit) || options.limit !== null) return new TypeError('"options.limit" must be an integer or null.');
